@@ -1,4 +1,4 @@
-# People counter
+# People Counting System (PCS)
 
 ## Abstract:
 
