@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #define INPUT "in"
 #define OUTPUT "out"
@@ -42,7 +43,7 @@ void digitalWrite(char pin[], char value[]) {
 	fclose(sysfs_value);	
 }
 
-char digtalRead(char pin[]) {
+char digitalRead(char pin[]) {
     char path[40];
     FILE *sysfs_value;
 	strcpy(path, "/sys/class/gpio/gpio");
@@ -64,19 +65,26 @@ void cleanUp(char pin[]) {
 	fclose(sysfs_unexport);
 }
 
+float getPulseUs(char pin[]) {
+    char baseLevel = digitalRead(pin);
+    while (digitalRead(pin) == baseLevel);
+    clock_t start = clock();
+    while (digitalRead(pin) != baseLevel);
+    clock_t end = clock();
+
+    return (float)(end - start) /  (CLOCKS_PER_SEC / 1000000);
+}
 
 /*
- * Until now, this code only reads the value from
- * ECHO Pin once and prints it to stdout.
+ * Until now, this code only measures the width
+ * of the Puls in Microsecends of ECHO Pin
  * 
  * TODO: give 10us pulse on TRIGGER Pin
- * TODO: measure time ECHO is high
  * TODO: convert time to distance
  */
 int main() {
     pinMode(ECHO, INPUT);
-    putchar(digtalRead(ECHO));
-    putchar('\n');
+    printf("%i us\n", (int) getPulseUs(ECHO));
 
     cleanUp(ECHO);
 
