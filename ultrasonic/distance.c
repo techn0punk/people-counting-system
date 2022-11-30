@@ -11,8 +11,8 @@
 #define HIGH "1"
 
 // HC-SR04 Pins
-#define TRIGGER "16"    // output
-#define ECHO "12"       // input
+#define TRIGGER "23"    // output
+#define ECHO "24"       // input
 
 void pinMode(char pin[], char mode[]) {
 	FILE *sysfs_export;
@@ -75,17 +75,29 @@ float getPulseUs(char pin[]) {
     return (float)(end - start) /  (CLOCKS_PER_SEC / 1000000);
 }
 
-/*
- * Until now, this code only measures the width
- * of the Puls in Microsecends of ECHO Pin
- * 
- * TODO: give 10us pulse on TRIGGER Pin
- * TODO: convert time to distance
+void putPulseUs(char pin[], int us) {
+    const clock_t clocks_per_us = (clock_t) (CLOCKS_PER_SEC / 1000000);
+    const clock_t cycles_to_wait = (clock_t) (us * clocks_per_us);
+    digitalWrite(pin, HIGH);
+    /* even without timing the pulse we can get is at least 150us wide */
+    //clock_t start = clock();
+    //while (clock() < start + cycles_to_wait);
+    digitalWrite(pin, LOW);
+
+}
+
+/* Most of the time the readings are somewhat accurate (+- 5mm).
+ * But approx every 10th reading is off by ~10cm.
+ * This is due to (expected) timing issues of unprivileged code.
  */
 int main() {
+    pinMode(TRIGGER, OUTPUT);
     pinMode(ECHO, INPUT);
-    printf("%i us\n", (int) getPulseUs(ECHO));
 
+    putPulseUs(TRIGGER, 10);
+    printf("%.1f cm\n", getPulseUs(ECHO)/58);
+
+    cleanUp(TRIGGER);
     cleanUp(ECHO);
 
     return 0;
