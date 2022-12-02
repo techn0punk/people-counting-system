@@ -1,0 +1,9 @@
+ultrasonic/yocto-playground/build/cache/
+ultrasonic/yocto-playground/build/downloads/
+ultrasonic/yocto-playground/build/sstate-cache/
+ultrasonic/yocto-playground/build/tmp/
+
+ultrasonic/yocto-playground/build-langdale/cache/
+ultrasonic/yocto-playground/build-langdale/downloads/
+ultrasonic/yocto-playground/build-langdale/sstate-cache/
+ultrasonic/yocto-playground/build-langdale/tmp/

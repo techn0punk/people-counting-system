@@ -1,0 +1,4 @@
+SANITY_VERSION 1
+TMPDIR /home/ika/gits/_htw/2022ws_team3/ultrasonic/yocto-playground/build/tmp
+SSTATE_DIR /home/ika/gits/_htw/2022ws_team3/ultrasonic/yocto-playground/build/sstate-cache
+NATIVELSBSTRING ubuntu-20.04
