@@ -13,18 +13,18 @@
 #define Line1  0xC0
 
 
-#define LCD_DAT         0b00000001  // Sending data bit on bit off cmd
-#define LCD_READ        0b00000010  // Set bit to assert read line
-#define LCD_ENABLE      0b00000100  // Enable bit toggle to latch data
-#define LCD_BACKLIGHT   0b00001000  // Set bi to turn backlight on
+#define LCD_DAT         0b00000001  
+#define LCD_READ        0b00000010  
+#define LCD_ENABLE      0b00000100  
+#define LCD_BACKLIGHT   0b00001000  
 
-// file descriptor seen by all subroutines
+
 int fd;  
 
 
 void lcd_wbyte(int bits, int mode)  
 {
-	uint8_t b[8];  // Temp buffer for transaction
+	uint8_t b[8];  
 	b[0] = b[1] = b[2] = mode | LCD_BACKLIGHT | (bits & 0xF0);
 	b[1] |= LCD_ENABLE; b[2] &= ~LCD_ENABLE;
 	b[3] = b[4] = b[5] = mode | LCD_BACKLIGHT | ((bits << 4) &0xF0);
