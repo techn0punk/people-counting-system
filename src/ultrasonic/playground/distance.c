@@ -14,6 +14,12 @@
 #define TRIGGER "23"    // output
 #define ECHO "24"       // input
 
+/**
+ * @brief Sets Pin either to INPUT or OUTPUT
+ * 
+ * @param pin number as string, e.g. "23"
+ * @param mode can be "in" or "out"
+ */
 void pinMode(char pin[], char mode[]) {
 	FILE *sysfs_export;
 	FILE *sysfs_direction;
@@ -31,6 +37,13 @@ void pinMode(char pin[], char mode[]) {
 	fclose(sysfs_direction);
 }
 
+/**
+ * @brief Sets given pin high (3.3V) or low (0V).
+ * The pin must be set to OUTPUT with pinMode() beforehand.
+ * 
+ * @param pin number as string, e.g. "23"
+ * @param value can be "0" for low and "1" for high
+ */
 void digitalWrite(char pin[], char value[]) {
 	char path[40];
 	FILE *sysfs_value;
@@ -43,6 +56,13 @@ void digitalWrite(char pin[], char value[]) {
 	fclose(sysfs_value);	
 }
 
+/**
+ * @brief Returns the Voltage level of the given pin.
+ * The pin must be set to INPUT with pinMode() beforehand.
+ * 
+ * @param pin number as string, e.g. "24"
+ * @return char is '1' for high (3.3V) or '0' for low (0V).
+ */
 char digitalRead(char pin[]) {
     char path[40];
     FILE *sysfs_value;
@@ -58,6 +78,12 @@ char digitalRead(char pin[]) {
     return value;
 }
 
+/**
+ * @brief Unexports the givien pin.
+ * This will undo the effect of pinMode().
+ * 
+ * @param pin number as string, e.g. "24"
+ */
 void cleanUp(char pin[]) {
 	FILE *sysfs_unexport;
 	sysfs_unexport = fopen("/sys/class/gpio/unexport", "w");
@@ -65,6 +91,16 @@ void cleanUp(char pin[]) {
 	fclose(sysfs_unexport);
 }
 
+/**
+ * @brief This measures the duration (in microseconds) 
+ * of a high pulse on the given pin. This function is not very precise.
+ * It can happen at any time that the scheduler suspends the execution
+ * of the function and further corrupts the result.
+ * The pin must be set to INPUT with pinMode() beforehand.
+ * 
+ * @param pin number as string, e.g. "24"
+ * @return float microseconds
+ */
 float getPulseUs(char pin[]) {
     char baseLevel = digitalRead(pin);
     while (digitalRead(pin) == baseLevel);
@@ -75,13 +111,23 @@ float getPulseUs(char pin[]) {
     return (float)(end - start) /  (CLOCKS_PER_SEC / 1000000);
 }
 
+/**
+ * @brief This puts a high pulse on the given pin for the given
+ * amount of microseconds. This function is not very precise.
+ * Depending on the clockspeed of the processor, the shortest
+ * achievable pulse duration can be several hundred microseconds.
+ * The pin must be set to OUTPUT with pinMode() beforehand.
+ * 
+ * @param pin number as string, e.g. "23"
+ * @param us microseconds of pulse duration
+ */
 void putPulseUs(char pin[], int us) {
     const clock_t clocks_per_us = (clock_t) (CLOCKS_PER_SEC / 1000000);
     const clock_t cycles_to_wait = (clock_t) (us * clocks_per_us);
     digitalWrite(pin, HIGH);
-    /* even without timing the pulse we can get is at least 150us wide */
-    //clock_t start = clock();
-    //while (clock() < start + cycles_to_wait);
+    /* even without timing the pulse is at least 150us wide (on Raspberry Pi Zero) */
+    clock_t start = clock();
+    while (clock() < start + cycles_to_wait);
     digitalWrite(pin, LOW);
 
 }
