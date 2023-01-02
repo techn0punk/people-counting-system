@@ -1,9 +1,12 @@
-// test program 
+
 
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <linux/i2c-dev.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+
 
 // I2C device address
 #define I2C_ADDR   0x3F 
@@ -80,8 +83,8 @@ int main()
   	//the function "typenln()" to write the specified text to that location on the LCD screen
   	//the funktion "sleep()" to pause the program for specified number os seconds
   	//the function "ClrLcd()" to clear the LCD screen
-  	lcdLoc(Line0); typeln("Raw IIC write");
-    	lcdLoc(Line1+1); typeln("Line 1");
+  	lcdLoc(Line0); typeln("Project CE");
+    	lcdLoc(Line1+1); typeln("Team C");
     	sleep(2);
     	ClrLcd();
 	sleep(1);
