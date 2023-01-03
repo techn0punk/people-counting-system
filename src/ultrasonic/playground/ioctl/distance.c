@@ -9,8 +9,8 @@
 #include <sys/epoll.h>
 #include <linux/gpio.h>
 
-#define TRIGGER 23
-#define ECHO 24
+#define TRIGGER 20
+#define ECHO 21
 
 
 /**
@@ -99,6 +99,8 @@ float getPulseUs(int pin) {
             }
         }
     }
+
+    close(req.fd);
 
     return (float) (end - start) / 1000; // microseconds
 }
