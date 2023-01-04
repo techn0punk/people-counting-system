@@ -5,6 +5,7 @@
 #define ECHO1 21
 #define TRIGGER2 23
 #define ECHO2 24
+#define TRESHOLD 0.7f
 
 int main(void) {
     printf("Calibrating sensors.\n");
@@ -21,8 +22,8 @@ int main(void) {
     d1_base_level = d1_base_level / 10.0;
     d2_base_level = d2_base_level / 10.0;
 
-    float d1_threshold = d1_base_level * 0.9;
-    float d2_threshold = d2_base_level * 0.9;
+    float d1_threshold = d1_base_level * TRESHOLD;
+    float d2_threshold = d2_base_level * TRESHOLD;
 
     printf("D1: %.2f [%.2f]  D2: %.2f [%.2f]\n", d1_base_level, d1_threshold, d2_base_level, d2_threshold);
     printf("Calibration done\n");
