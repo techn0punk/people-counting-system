@@ -14,6 +14,11 @@
 #define TRIGGER "23"    // output
 #define ECHO "24"       // input
 
+#define TRIGGER "23"    // output
+#define ECHO "24"       // input
+
+
+
 void pinMode(char pin[], char mode[]) {
 	FILE *sysfs_export;
 	FILE *sysfs_direction;
