@@ -1,5 +1,5 @@
-#ifndef _PCS_H
-#define _PCS_H
+#ifndef _RPI_H
+#define _RPI_H
 
 /**
  * @brief Pauses the program for the amount of time (in microseconds)
@@ -24,14 +24,16 @@ void delayMS(long milliseconds);
  * 
  * @param GPIO pin number 
  * @param value can be 1 for high and 0 for low. 
+ * @return On success, 0 is returned. On error, -1 is returned.
  */
-void digitalWrite(int pin, int value);
+int digitalWrite(int pin, int value);
 
 /**
  * @brief Checks if specified GPIO is high (3.3V) or low (0V).
  * 
  * @param GPIO pin number
  * @return int will be 1 for high and 0 for low.
+ * On error, -1 will be returned.
  */
 int digitalRead(int pin);
 

@@ -22,7 +22,7 @@ void delayMS(long milliseconds) {
     while (clock() < start + cycles_to_wait);
 }
 
-void digitalWrite(int pin, int value) {
+int digitalWrite(int pin, int value) {
     struct gpiohandle_request req;
     req.lineoffsets[0] = pin;
     req.flags = GPIOHANDLE_REQUEST_OUTPUT;
@@ -31,12 +31,16 @@ void digitalWrite(int pin, int value) {
     req.lines = 1;
 
     int fd = open("/dev/gpiochip0", O_RDONLY);
+    if (fd == -1) return fd;
+
     int ret = ioctl(fd, GPIO_GET_LINEHANDLE_IOCTL, &req);
+    if (ret == -1) return ret;
     close(fd);
 
     struct gpiohandle_data data;
     data.values[0] = value;
     ret = ioctl(req.fd, GPIOHANDLE_SET_LINE_VALUES_IOCTL, &data);
+    if (ret == -1) return ret;
     close(req.fd);
 }
 
@@ -48,11 +52,15 @@ int digitalRead(int pin) {
     req.lines = 1;
 
     int fd = open("/dev/gpiochip0", O_RDONLY);
+    if (fd == -1) return fd;
+
     int ret = ioctl(fd, GPIO_GET_LINEHANDLE_IOCTL, &req);
+    if (ret == -1) return ret;
     close(fd);
 
     struct gpiohandle_data data;
     ret = ioctl(req.fd, GPIOHANDLE_GET_LINE_VALUES_IOCTL, &data);
+    if (ret == -1) return ret;
     close(req.fd);
 
     return data.values[0];
