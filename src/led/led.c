@@ -1,78 +1,47 @@
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include "rpi.h"
 
-#define OUTPUT "out"
-#define LOW "0"
-#define HIGH "1"
-
-void pinMode(char pin[], char mode[]) {
-	FILE *sysfs_export;
-	FILE *sysfs_direction;
-	char path[40] = "";
-	sysfs_export = fopen("/sys/class/gpio/export", "w");
-	fwrite(pin, 1, sizeof(pin), sysfs_export);
-	fclose(sysfs_export);
-	
-	strcpy(path, "/sys/class/gpio/gpio");
-	strcat(path, pin);
-	strcat(path, "/direction");
-
-	sysfs_direction = fopen(path, "w");
-	fwrite(mode, 1, sizeof(mode), sysfs_direction);
-	fclose(sysfs_direction);
+int turnOnGreen(void) {
+if (!digitalWrite(26,1)){return -1;}
+else {
+    digitalWrite(26, 1);
+    return 0;
+     }
 }
 
-void digitalWrite(char pin[], char value[]) {
-	char path[40];
-	FILE *sysfs_value;
-	strcpy(path, "/sys/class/gpio/gpio");
-	strcat(path, pin);
-	strcat(path, "/value");
-
-	sysfs_value = fopen(path, "w");
-	fwrite(value, 1, sizeof(value), sysfs_value);
-	fclose(sysfs_value);	
+int turnOffGreen(void) {
+if (!digitalWrite(26,1)){return -1;}
+else {
+    digitalWrite(26, 0);
+    return 0;
+     }
+}
+int turnOnYellow(void) {
+if (!digitalWrite(26,1)){return -1;}
+else {
+    digitalWrite(6, 1);
+    return 0;
+     }
 }
 
-void cleanUp(char pin[]) {
-	FILE *sysfs_unexport;
-	sysfs_unexport = fopen("/sys/class/gpio/unexport", "w");
-	fwrite(pin, 1, sizeof(pin), sysfs_unexport);
-	fclose(sysfs_unexport);
+int turnOffYellow(void) {
+ if (!digitalWrite(26,1)){return -1;}
+else {
+    digitalWrite(6, 0);
+    return 0;
+     }
 }
 
-int main() {
-
-	pinMode("26", OUTPUT);
-	pinMode("6",OUTPUT);
-	pinMode("5",OUTPUT);
-
-	for (size_t i = 0; i < 5; i++)
-	{
-		
-		digitalWrite("26", HIGH);
-		printf("GPIO26 on\n");
-		sleep(1);
-		digitalWrite("26", LOW);
-		printf("GPIO26 off\n");
-		sleep(1);
-		digitalWrite("6", HIGH);
-		printf("GPIO6 on\n");
-		sleep(1);
-		digitalWrite("6", LOW);
-		printf("GPIO6 off\n");
-		sleep(1);
-		digitalWrite("5", HIGH);
-		printf("GPIO5 on\n");
-		sleep(1);
-		digitalWrite("5", LOW);
-		printf("GPIO5 off\n");
-		sleep(1);
-	}
-
-	cleanUp("26");
-	cleanUp("6");
-	cleanUp("5");
-	return 0;
+int turnOnRed(void) {
+if (!digitalWrite(26,1)){return -1;}
+else {   
+    digitalWrite(5, 1);
+    return 0;
+     }
+}
+int turnOffRed(void) {
+if (!digitalWrite(26,1)){return -1;}
+else {    
+    digitalWrite(5, 0);
+    return 0;
+     }
 }
