@@ -1,11 +1,8 @@
 #include "rpi.h"
 
 int turnOnGreen(void) {
-if (!digitalWrite(26,1)){return -1;}
-else {
-    digitalWrite(26, 1);
-    return 0;
-     }
+    return digitalWrite(26,1);
+
 }
 
 int turnOffGreen(void) {
