@@ -7,13 +7,13 @@
  * @brief Computer core time when UP was last pressed.
  * 
  */
-extern clock_t last_UP;
+// extern clock_t last_UP;
 
 /**
  * @brief Computer core time when OK was last pressed.
  * 
  */
-extern clock_t last_OK;
+// extern clock_t last_OK;
 
 /**
  * @brief Number of milliseconds that must have passed
