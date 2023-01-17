@@ -37,4 +37,24 @@ int digitalWrite(int pin, int value);
  */
 int digitalRead(int pin);
 
+/**
+ * @brief Puts a high pulse (3.3V) on the specified pin, 
+ * for the specified amount of microseconds.
+ * 
+ * @param GPIO pin number
+ * @param microseconds 
+ * @return On success, 0 is returned. On error, -1 is returned.
+ */
+int putPulse(int pin, long microseconds);
+
+/**
+ * @brief Get the duration of an incomming high pulse (3.3V)
+ * on the specified pin.
+ * 
+ * @param GPIO pin number 
+ * @return On success, positive float value of microseconds is returned.
+ * On error, the value will be negative.
+ */
+float getPulseUS(int pin);
+
 #endif
