@@ -2,7 +2,7 @@
 
 
 
-#include "rpi.h"
+//#include "rpi.h"
 
 int lcdS1(void) {
 
@@ -36,6 +36,43 @@ int lcdS2(int decimalplace, int digit) {
  
   return 0;
 }
+
+/**
+ * int lcdS2(int decimalplace, int digit) {
+    int limit = digit;
+    int cursor = decimalplace;
+    int button;
+    while (1) {
+        // display limit on the LCD with cursor at the current decimal place
+        displayNumberWithCursor(limit, cursor);
+
+        // get button press
+        button = getButtonPress();
+
+        // check button press
+        if (button == UP) {
+            int temp = limit / (int)pow(10, cursor) % 10;
+            temp = (temp + 1) % 10;
+            limit += temp * (int)pow(10, cursor);
+        } else if (button == OK) {
+            return limit;
+        } else if (button == DOWN) {
+            int temp = limit / (int)pow(10, cursor) % 10;
+            temp = (temp - 1) % 10;
+            limit += temp * (int)pow(10, cursor);
+        } else if (button == LEFT) {
+            if (cursor > 0) {
+                cursor--;
+            }
+        } else if (button == RIGHT) {
+            if (cursor < 1) {
+                cursor++;
+            }
+        }
+    }
+    return -1;
+}
+*/
 
 int lcdS3(int count, int limit) {
 
