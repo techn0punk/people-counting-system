@@ -22,6 +22,17 @@ extern float threshold_distance1;
 extern float threshold_distance2;
 
 /**
+ * @brief Get the Distance in centimeters, measured
+ * with HC-SR04 module, connected on the specified pins.
+ * 
+ * @param GPIO pin number of trigger
+ * @param GPIO pin number of echo
+ * @return On success, positive float value of centimeters is returned.
+ * On error, the value will be negative.
+ */
+float getDistanceCM(int trigger, int echo);
+
+/**
  * @brief Calibrates the ultrasonic sensors to the
  * distance to the wall and determines at which
  * distance an object is detected in the measuring

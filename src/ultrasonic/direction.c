@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "distance.h"
 
-#define TRIGGER1 20
-#define ECHO1 21
-#define TRIGGER2 23
-#define ECHO2 24
+#define TRIGGER1 23
+#define ECHO1 24
+#define TRIGGER2 25
+#define ECHO2 16
 #define TRESHOLD 0.7f
 
 int main(void) {
