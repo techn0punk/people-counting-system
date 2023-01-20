@@ -11,6 +11,7 @@
 #include "ultrasonic.h"
 
 int count;
+int last_count;
 
 float threshold_distance1;
 float threshold_distance2;
@@ -28,6 +29,7 @@ float getDistanceCM(int trigger, int echo) {
 
 int calibrate(float threshold) {
     count = 0;
+    last_count = 0;
 
     float d1_base_level = 0.0;
     float d2_base_level = 0.0;
@@ -82,6 +84,7 @@ int updateCount(void) {
 
             if (d2 < threshold_distance2) // --- ltr --> confirmed
             {
+                last_count = count;
                 count--;
 
                 #ifdef DEBUG
@@ -126,6 +129,7 @@ int updateCount(void) {
 
             if (d1 < threshold_distance1) // <-- rtl --- confirmed
             {
+                last_count = count;
                 count++;
 
                 #ifdef DEBUG
@@ -153,6 +157,11 @@ int updateCount(void) {
         return -999;
         
     }
+    else
+    {
+        last_count = count;
+    }
+    
 
     delayMS(DELAY);
 

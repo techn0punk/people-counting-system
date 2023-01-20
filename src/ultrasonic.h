@@ -18,6 +18,12 @@
 extern int count;
 
 /**
+ * @brief Holds the previous value of count.
+ * 
+ */
+extern int last_count;
+
+/**
  * @brief Holds the distance in cm below which an object
  * is detected. (Valid for sensor 1)
  * 
