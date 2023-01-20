@@ -1,6 +1,10 @@
 #ifndef _LED_H
 #define _LED_H
 
+#define GREEN 26
+#define YELLOW 6
+#define RED 5
+
 /**
  * @brief Green LED is turned on.
  * 
