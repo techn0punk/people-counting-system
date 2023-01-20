@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "display.h"
 #include "ultrasonic.h"
 #include "button.h"
@@ -11,23 +12,59 @@
 #define ECHO2 16
 #define THRESHOLD 0.7f
 
-
+#define LIMIT 10
 
 int main(void) {
+
+    // printf("%.2f\n", getDistanceCM(TRIGGER1, ECHO1));
+    lcdS1();
 
     if (calibrate(THRESHOLD) == -1)
     {
         printf("Error calibrating sensors!\n");
+        lcdSE("Ultrasonic");
         return 1;
     }
     
+    turnOnGreen();
+    lcdS3(count, LIMIT);
+
     while(1) {
+
 
         if (updateCount() == -999)
         {
             printf("Error updating count!\n");
-            return 1;
+            //lcdSE("Ultrasonic");
+            continue;
         }
+        
+        if (last_count != count)
+        {
+            lcdS3(count, LIMIT);
+            if (count < LIMIT -1)
+            {
+                turnOffYellow();
+                turnOffRed();
+                turnOnGreen();
+            }
+            else if (count < LIMIT)
+            {
+                turnOffGreen();
+                turnOffRed();
+                turnOnYellow();
+            }
+            else if (count >= LIMIT)
+            {
+                turnOffGreen();
+                turnOffYellow();
+                turnOnRed();
+            }
+            
+            
+            
+        }
+        
 
         #ifndef DEBUG
         printf("CNT: %d\n", count);
