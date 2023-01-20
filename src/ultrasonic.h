@@ -1,6 +1,16 @@
 #ifndef _ULTRASONIC_H
 #define _ULTRASONIC_H
 
+#define TRIGGER1 23
+#define ECHO1 24
+#define TRIGGER2 25
+#define ECHO2 16
+
+#define DELAY 50    // Delay between measurements (ms)
+#define TTL 1000    // Time to leave (ms)
+
+
+
 /**
  * @brief Holds the count of people currently in the room.
  * 
@@ -50,7 +60,8 @@ int calibrate(float threshold);
  * whether people enter or leave the room.
  * This function is non-blocking.
  * 
- * @return On success, the new count is returned. On error, -1 is returned.
+ * @return On success, the new count is returned. 
+ * On error, -999 is returned.
  */
 int updateCount(void);
 

@@ -1,6 +1,6 @@
 PROG = pcs
 CC = gcc
-CFLAGS = -g
+CFLAGS = -g -DDEBUG
 LDFLAGS = -g
 
 SRCS = main.c rpi.c display.c ultrasonic.c button.c led.c
@@ -14,6 +14,9 @@ $(PROG): $(OBJS)
 
 clean:
 	rm $(OBJS) $(PROG)
+
+run: $(PROG)
+	./$(PROG)
 
 # Dependencies
 display.o: rpi.o
