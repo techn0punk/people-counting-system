@@ -75,13 +75,13 @@ int updateCount(void) {
 
         for (size_t i = 0; i < SECONDSENSOR; i++) // wait ~2.5sec to confirm
         {
-            d2 = getDistanceCM(TRIGGER2, ECHO2);
-            if (d2 < 0.0) return -999;
+            d2 = getDistanceCM(TRIGGER2, ECHO2); // error happens here
 
             #ifdef DEBUG
             printf("D2: %.2f [%.2f]\n", d2, threshold_distance2);
             #endif
 
+            if (d2 < 0.0) return -999;
             if (d2 < threshold_distance2) // --- ltr --> confirmed
             {
                 last_count = count;
@@ -121,12 +121,12 @@ int updateCount(void) {
         for (size_t i = 0; i < SECONDSENSOR; i++) // wait ~2.5sec to confirm
         {
             d1 = getDistanceCM(TRIGGER1, ECHO1);
-            if (d1 < 0.0) return -999;
 
             #ifdef DEBUG
             printf("D1: %.2f [%.2f]\n", d1, threshold_distance1);
             #endif
 
+            if (d1 < 0.0) return -999;
             if (d1 < threshold_distance1) // <-- rtl --- confirmed
             {
                 last_count = count;
