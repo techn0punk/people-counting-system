@@ -73,7 +73,7 @@ int updateCount(void) {
         printf("D1 sensed, Waiting for D2\n");
         #endif
 
-        for (size_t i = 0; i < 500; i++) // wait ~2.5sec to confirm
+        for (size_t i = 0; i < SECONDSENSOR; i++) // wait ~2.5sec to confirm
         {
             d2 = getDistanceCM(TRIGGER2, ECHO2);
             if (d2 < 0.0) return -999;
@@ -118,7 +118,7 @@ int updateCount(void) {
         printf("D2 sensed, Waiting for D1\n");
         #endif
 
-        for (size_t i = 0; i < 500; i++) // wait ~2.5sec to confirm
+        for (size_t i = 0; i < SECONDSENSOR; i++) // wait ~2.5sec to confirm
         {
             d1 = getDistanceCM(TRIGGER1, ECHO1);
             if (d1 < 0.0) return -999;

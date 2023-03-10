@@ -8,7 +8,7 @@
 
 #define DELAY 50    // Delay between measurements (ms)
 #define TTL 1000    // Time to leave (ms)
-
+#define SECONDSENSOR 100 // How often should the system try to confirm the direction
 
 
 /**

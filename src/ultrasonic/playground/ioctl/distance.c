@@ -9,8 +9,8 @@
 #include <sys/epoll.h>
 #include <linux/gpio.h>
 
-#define TRIGGER 20
-#define ECHO 21
+#define TRIGGER 25
+#define ECHO 16
 
 
 /**

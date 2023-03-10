@@ -65,11 +65,6 @@ int main(void) {
             
         }
         
-
-        #ifndef DEBUG
-        printf("CNT: %d\n", count);
-        #endif
-        
     }
     
     return 0;
