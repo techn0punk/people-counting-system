@@ -1,6 +1,6 @@
 #include <time.h>
-#include "rpi.h"
 #include <stdio.h>
+#include "rpi.h"
 
 clock_t last_UP_time = 0;
 int last_UP_value = 0;
@@ -14,40 +14,21 @@ const clock_t cycles_to_wait = (clock_t) (debounce_MS * clocks_per_ms);
 
 int buttonUP(void) {
 
-// 	struct timespec startTime, endTime;
-
-// 	int buttonup;
-// 	int buttoncount = 0;
-
-// 	buttonup = digitalRead(17);	
-// 	if(buttonup == 1){
-// 	buttoncount++;
-// /*	clock_gettime(CLOCK_MONOTONIC, &startTime);
-// 	}
-// 	if(buttonup == 0){
-// 	clock_gettime(CLOCK_MONOTONIC, &endTime);
-// 	double pressTime = (endTime.tv_sec - startTime.tv_sec)+
-// 	(endTime.tv_nsec -startTime.tv_nsec) / 1e9;
-// */
-// 	printf("button pressed %d times\n", buttoncount);
-// }
-
-    return 0;
+    int button = digitalRead(17);
+	if ((button != last_UP_value) && (clock() > last_UP_time + cycles_to_wait))
+	{
+		last_UP_time = clock();
+		last_UP_value = button;
+		return button;
+	}
+	else 
+	{
+		return -1;
+	}
 }
 
 
 int buttonOK(void) {
-
-	/**
-	 * button = DR(27)
-	 * if (button != last_OK_value) && (clock() > last_OK_time + cycles_to_wait):
-	 * 		last_OK_time = clock();
-	 * 		last_OK_value = button;
-	 * 		return button;
-	 * else:
-	 * 		return !button
-	 * 
-	 */
 
 	int button = digitalRead(27);
 	if ((button != last_OK_value) && (clock() > last_OK_time + cycles_to_wait))
@@ -63,3 +44,19 @@ int buttonOK(void) {
 	
 }
 
+int main(void) {
+	while (1)
+	{
+		if (buttonUP() == 1)
+		{
+			printf("Button UP pressed [%ld]\n", clock());
+		}
+		if (buttonOK() == 1)
+		{
+			printf("Button OK pressed [%ld]\n", clock());
+		}
+		
+		
+	}
+	
+}
