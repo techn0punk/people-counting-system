@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "rpi.h"
 
+#define UP 17
+#define OK 18
+
 clock_t last_UP_time = 0;
 int last_UP_value = 0;
 
@@ -14,7 +17,7 @@ const clock_t cycles_to_wait = (clock_t) (debounce_MS * clocks_per_ms);
 
 int buttonUP(void) {
 
-    int button = digitalRead(17);
+    int button = digitalRead(UP);
 	if ((button != last_UP_value) && (clock() > last_UP_time + cycles_to_wait))
 	{
 		last_UP_time = clock();
@@ -30,7 +33,7 @@ int buttonUP(void) {
 
 int buttonOK(void) {
 
-	int button = digitalRead(27);
+	int button = digitalRead(OK);
 	if ((button != last_OK_value) && (clock() > last_OK_time + cycles_to_wait))
 	{
 		last_OK_time = clock();
