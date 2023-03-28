@@ -85,10 +85,15 @@ int lcdS2(int decimalplace, int limit) {
     if (!display) lcd_init();
     ClrLcd();
 
-    if (decimalplace == 0)
+    if (decimalplace == 0 && limit < 10)
     {
         sprintf(text0, "         V");
         sprintf(text1, "limit = _%d", limit);
+    }
+    else if (decimalplace == 0 && limit >= 10)
+    {
+        sprintf(text0, "         V");
+        sprintf(text1, "limit = %d", limit);        
     }
     else if (decimalplace == 1)
     {
@@ -147,12 +152,12 @@ int lcdS3(int count, int limit) {
     if (!display) lcd_init();
     ClrLcd();
 
-    if (count < 0) {
-        return -1;
-    }
-    if (limit < 1) {
-        return -1;
-    }
+    // if (count < 0) {
+    //     return -1;
+    // }
+    // if (limit < 1) {
+    //     return -1;
+    // }
 
     sprintf(text0, "count = %d/%d", count, limit);
     sprintf(text1, "any key for rst");

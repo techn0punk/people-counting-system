@@ -3,6 +3,9 @@
 
 #include <time.h>
 
+#define UP 27
+#define OK 17
+
 /**
  * @brief Computer core time when UP was last pressed.
  * 
@@ -20,7 +23,7 @@
  * before a new button press should be recognized.
  * 
  */
-extern int debounce_MS;
+//extern int debounce_MS;
 
 /**
  * @brief Check if button UP was pressed.

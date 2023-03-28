@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include "rpi.h"
 
-#define UP 17
-#define OK 18
+#define UP 27
+#define OK 17
 
 clock_t last_UP_time = 0;
 int last_UP_value = 0;

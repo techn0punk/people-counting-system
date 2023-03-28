@@ -73,6 +73,8 @@ int updateCount(void) {
         printf("D1 sensed, Waiting for D2\n");
         #endif
 
+        delayMS(DELAY);
+
         for (size_t i = 0; i < SECONDSENSOR; i++) // wait ~2.5sec to confirm
         {
             d2 = getDistanceCM(TRIGGER2, ECHO2); // error happens here
@@ -117,6 +119,8 @@ int updateCount(void) {
         #ifdef DEBUG
         printf("D2 sensed, Waiting for D1\n");
         #endif
+
+        delayMS(DELAY);
 
         for (size_t i = 0; i < SECONDSENSOR; i++) // wait ~2.5sec to confirm
         {

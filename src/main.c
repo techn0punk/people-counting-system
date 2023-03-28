@@ -30,11 +30,14 @@ void simpleCounting(void);
 int main(void) {
     turnOnGreen();
     state_t currentState = STATE_CALIBRATION;
+    printf("Current state: %d  [%ld]\n", currentState, clock());
 
     while(1) {
+        if (count < 0) count = 0;
         int buttonOKpressed = buttonOK();
+        if (buttonOKpressed == 1) printf("Button OK pressed [%ld]\n", clock());
         int buttonUPpressed = buttonUP();
-        printf("Current state: %d\n", currentState);
+        if (buttonUPpressed == 1) printf("Button UP pressed [%ld]\n", clock());
 
         // Transition to next state
         currentState = stateMachine(currentState, buttonOKpressed, buttonUPpressed);
@@ -47,6 +50,7 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
         case STATE_CALIBRATION:
             lcdS1();
             if (calibrate(THRESHOLD) == 0) {
+                lcdS2(0, limit);
                 return STATE_SET_LIMIT;
             }
             else {
@@ -56,9 +60,9 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
             }
             break;
         case STATE_SET_LIMIT:
-            lcdS2(0, limit);
             if (buttonUPpressed == 1) {
                 limit++;
+                lcdS2(0, limit);
                 return STATE_SET_LIMIT;
             }
             else if (buttonOKpressed == 1) {
@@ -66,25 +70,23 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
                 return STATE_COUNTING;
             }
             else {
-                printf("Error setting limit!\n");
-                lcdSE("setting limit");
-                return STATE_ERROR;
+                return STATE_SET_LIMIT;
             }
             break;
         case STATE_COUNTING:
             if (last_count != count) {
-                lcdS3(count, LIMIT);
-                if (count < LIMIT -1) {
+                lcdS3(count, limit);
+                if (count < limit -1) {
                     turnOffYellow();
                     turnOffRed();
                     turnOnGreen();
                 }
-                else if (count < LIMIT) {
+                else if (count < limit) {
                     turnOffGreen();
                     turnOffRed();
                     turnOnYellow();
                 }
-                else if (count >= LIMIT) {
+                else if (count >= limit) {
                     turnOffGreen();
                     turnOffYellow();
                     turnOnRed();
@@ -92,6 +94,7 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
             }
             int newCount = updateCount();
             if (buttonOKpressed == 1 || buttonUPpressed == 1) {
+                lcdS4();
                 return STATE_RESET;
             }
             else if (newCount == -999){
@@ -103,14 +106,27 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
                 count = newCount;
                 return STATE_COUNTING;
             }
-            break; // WIP
+            break;
         case STATE_RESET:
-            // Perform actions for STATE_RESET
-            return STATE_CALIBRATION;
+            if (buttonUPpressed == 1) {
+                return STATE_COUNTING;
+            }
+            else if (buttonOKpressed == 1) {
+                count = 0;
+                limit = 0;
+                return STATE_CALIBRATION;
+            }
+            else {
+                return STATE_RESET;
+            }
             break;
         case STATE_ERROR:
-            // Perform actions for STATE_ERROR
-            return STATE_ERROR;
+            if (buttonOKpressed == 1 || buttonUPpressed == 1) {
+                return STATE_RESET;
+            }
+            else {
+                return STATE_ERROR;
+            }
             break;
         default:
             return STATE_ERROR;
@@ -127,7 +143,7 @@ void simpleCounting(void) {
     {
         printf("Error calibrating sensors!\n");
         lcdSE("Ultrasonic");
-        return 1;
+        return;
     }
     
     turnOnGreen();
