@@ -15,10 +15,12 @@
 #define LIMIT 10
 
 int limit = 0;
+int threshold_yellow;
 
 typedef enum {
     STATE_CALIBRATION,
     STATE_SET_LIMIT,
+    STATE_SET_LIMIT_1,
     STATE_COUNTING,
     STATE_RESET,
     STATE_ERROR
@@ -66,17 +68,32 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
                 return STATE_SET_LIMIT;
             }
             else if (buttonOKpressed == 1) {
-                lcdS3(count, limit);
-                return STATE_COUNTING;
+                lcdS2(1, limit);
+                return STATE_SET_LIMIT_1;
             }
             else {
                 return STATE_SET_LIMIT;
             }
             break;
+        case STATE_SET_LIMIT_1:
+            if (buttonUPpressed == 1) {
+                limit += 10;
+                lcdS2(1, limit);
+                return STATE_SET_LIMIT_1;
+            }
+            else if (buttonOKpressed == 1) {
+                threshold_yellow = (int)(limit * 0.1 + 0.5); // +0.5 for rounding to next larger integer
+                lcdS3(count, limit);
+                return STATE_COUNTING;
+            }
+            else {
+                return STATE_SET_LIMIT_1;
+            }
+            break;
         case STATE_COUNTING:
             if (last_count != count) {
                 lcdS3(count, limit);
-                if (count < limit -1) {
+                if (count < limit - threshold_yellow) {
                     turnOffYellow();
                     turnOffRed();
                     turnOnGreen();
@@ -109,6 +126,7 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
             break;
         case STATE_RESET:
             if (buttonUPpressed == 1) {
+                lcdS3(count, limit);
                 return STATE_COUNTING;
             }
             else if (buttonOKpressed == 1) {

@@ -85,20 +85,15 @@ int lcdS2(int decimalplace, int limit) {
     if (!display) lcd_init();
     ClrLcd();
 
-    if (decimalplace == 0 && limit < 10)
+    if (decimalplace == 0)
     {
         sprintf(text0, "         V");
-        sprintf(text1, "limit = _%d", limit);
-    }
-    else if (decimalplace == 0 && limit >= 10)
-    {
-        sprintf(text0, "         V");
-        sprintf(text1, "limit = %d", limit);        
+        sprintf(text1, "limit = %02d", limit);
     }
     else if (decimalplace == 1)
     {
         sprintf(text0, "        V");
-        sprintf(text1, "limit = %d", limit);
+        sprintf(text1, "limit = %02d", limit);
     }
     else //Invalid decimal. Must be 0 or 1
     {
