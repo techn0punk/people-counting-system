@@ -1,0 +1,9 @@
+[Unit]
+Description=People Counting System (PCS) Service
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/pcs &
+
+[Install]
+WantedBy=multi-user.target
