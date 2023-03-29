@@ -1,3 +1,0 @@
-# sysfs
-
-too slow

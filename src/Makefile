@@ -1,6 +1,6 @@
 PROG = pcs
 CC = gcc
-CFLAGS = -g -DDEBUG
+CFLAGS = -g
 LDFLAGS = -g
 
 SRCS = main.c rpi.c display.c ultrasonic.c button.c led.c
