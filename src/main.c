@@ -20,26 +20,26 @@ int threshold_yellow;
 typedef enum {
     STATE_CALIBRATION,
     STATE_SET_LIMIT,
-    STATE_SET_LIMIT_1,
+    STATE_SET_LIMIT_10,
     STATE_COUNTING,
     STATE_RESET,
     STATE_ERROR
 } state_t;
 
 state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpressed);
-void simpleCounting(void);
 
 int main(void) {
-    turnOnGreen();
     state_t currentState = STATE_CALIBRATION;
-    printf("Current state: %d  [%ld]\n", currentState, clock());
 
     while(1) {
         if (count < 0) count = 0;
         int buttonOKpressed = buttonOK();
-        if (buttonOKpressed == 1) printf("Button OK pressed [%ld]\n", clock());
         int buttonUPpressed = buttonUP();
+
+        #ifdef DEBUG
+        if (buttonOKpressed == 1) printf("Button OK pressed [%ld]\n", clock());
         if (buttonUPpressed == 1) printf("Button UP pressed [%ld]\n", clock());
+        #endif
 
         // Transition to next state
         currentState = stateMachine(currentState, buttonOKpressed, buttonUPpressed);
@@ -51,6 +51,10 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
     switch(currentState) {
         case STATE_CALIBRATION:
             lcdS1();
+            delayMS(2000);
+            turnOnGreen();
+            turnOffYellow();
+            turnOffRed();
             if (calibrate(THRESHOLD) == 0) {
                 lcdS2(0, limit);
                 return STATE_SET_LIMIT;
@@ -69,17 +73,17 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
             }
             else if (buttonOKpressed == 1) {
                 lcdS2(1, limit);
-                return STATE_SET_LIMIT_1;
+                return STATE_SET_LIMIT_10;
             }
             else {
                 return STATE_SET_LIMIT;
             }
             break;
-        case STATE_SET_LIMIT_1:
+        case STATE_SET_LIMIT_10:
             if (buttonUPpressed == 1) {
                 limit += 10;
                 lcdS2(1, limit);
-                return STATE_SET_LIMIT_1;
+                return STATE_SET_LIMIT_10;
             }
             else if (buttonOKpressed == 1) {
                 threshold_yellow = (int)(limit * 0.1 + 0.5); // +0.5 for rounding to next larger integer
@@ -87,7 +91,7 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
                 return STATE_COUNTING;
             }
             else {
-                return STATE_SET_LIMIT_1;
+                return STATE_SET_LIMIT_10;
             }
             break;
         case STATE_COUNTING:
@@ -149,59 +153,5 @@ state_t stateMachine(state_t currentState, int buttonOKpressed, int buttonUPpres
         default:
             return STATE_ERROR;
             break;
-    }
-}
-
-void simpleCounting(void) {
-
-    // printf("%.2f\n", getDistanceCM(TRIGGER1, ECHO1));
-    lcdS1();
-
-    if (calibrate(THRESHOLD) == -1)
-    {
-        printf("Error calibrating sensors!\n");
-        lcdSE("Ultrasonic");
-        return;
-    }
-    
-    turnOnGreen();
-    lcdS3(count, LIMIT);
-
-    while(1) {
-
-
-        if (updateCount() == -999)
-        {
-            printf("Error updating count!\n");
-            //lcdSE("Ultrasonic");
-            continue;
-        }
-        
-        if (last_count != count)
-        {
-            lcdS3(count, LIMIT);
-            if (count < LIMIT -1)
-            {
-                turnOffYellow();
-                turnOffRed();
-                turnOnGreen();
-            }
-            else if (count < LIMIT)
-            {
-                turnOffGreen();
-                turnOffRed();
-                turnOnYellow();
-            }
-            else if (count >= LIMIT)
-            {
-                turnOffGreen();
-                turnOffYellow();
-                turnOnRed();
-            }
-            
-            
-            
-        }
-        
     }
 }
