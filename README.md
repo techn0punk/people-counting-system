@@ -1,5 +1,7 @@
 # People Counting System (PCS)
 
+> This project was developed as part of the course "Project Computer Systems Engineering" in the [Computer Engineering](https://ce-bachelor.htw-berlin.de/) program at [HTW Berlin](https://www.htw-berlin.de/).
+
 ## Abstract:
 
 We are planning to develop a machine that counts the number of people in a room. This can be useful to comply with any regulations on the number of participants at, e.g. in the context of infection control laws.

@@ -93,16 +93,6 @@ int updateCount(void) {
                 printf("--- ltr -->  CNT: %d\n", count);
                 #endif
 
-                // do // wait for person to leave measurement area
-                // {
-                //     d2 = getDistanceCM(TRIGGER2, ECHO2);
-                //     if (d2 < 0.0) return -999;
-
-                //     #ifdef DEBUG
-                //     printf("leave D2: %.2f [%.2f]\n", d2, threshold_distance2);
-                //     #endif
-                // } while (d2 < threshold_distance2);
-
                 delayMS(TTL);
 
                 return count;
@@ -139,16 +129,6 @@ int updateCount(void) {
                 #ifdef DEBUG
                 printf("<-- rtl ---  CNT: %d\n", count);
                 #endif
-
-                // do // wait for person to leave measurement area
-                // {
-                //     d1 = getDistanceCM(TRIGGER1, ECHO1);
-                //     if (d1 < 0.0) return -999;
-
-                //     #ifdef DEBUG
-                //     printf("leave D1: %.2f [%.2f]\n", d1, threshold_distance1);
-                //     #endif
-                // } while (d1 < threshold_distance1);
 
                 delayMS(TTL);
 

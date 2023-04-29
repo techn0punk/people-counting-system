@@ -32,10 +32,10 @@ void lcd_wbyte(int bits, int mode)
 
 // clr lcd go home loc 0x80
 void ClrLcd(void)   {
-	lcd_wbyte(0x01, 0); // is the command to clear the display
-	usleep(2000); // after each sent command, it is stopped for 2000 microseconds, is necessary,
-		      // so the LCD has enough time to process the command before sending the next one
-	lcd_wbyte(0x02, 0); //Return-Home-Befehl, this command tells the LCD to move the cursor to the home position
+	lcd_wbyte(0x01, 0);     // is the command to clear the display
+	usleep(2000);           // after each sent command, it is stopped for 2000 microseconds, is necessary,
+		                    // so the LCD has enough time to process the command before sending the next one
+	lcd_wbyte(0x02, 0);     //Return-Home-Befehl, this command tells the LCD to move the cursor to the home position
 	
   
 }
@@ -43,11 +43,11 @@ void ClrLcd(void)   {
 // Initialise display to 4 bit as per the datasheet
 int lcd_init()   
 {
-    if ((dfd = open("/dev/i2c-1", O_RDWR)) < 0) return -1 ; // Check interface for device
+    if ((dfd = open("/dev/i2c-1", O_RDWR)) < 0) return -1 ;     // Check interface for device
     if (ioctl(dfd, I2C_SLAVE, I2C_ADDR) < 0) return -1 ;
 
-	const uint8_t b[4] = {0x30, 0x30 | LCD_ENABLE, 0x30}; // Sequence to clock 3 into upper 4 bits
-	write(dfd, b, 3);  usleep(6000); write(dfd, b, 3);  // Prepare for 4 bit width?
+	const uint8_t b[4] = {0x30, 0x30 | LCD_ENABLE, 0x30};       // Sequence to clock 3 into upper 4 bits
+	write(dfd, b, 3);  usleep(6000); write(dfd, b, 3);          // Prepare for 4 bit width?
 	lcd_wbyte(0x32, 0); // Force 4 bit width
 	lcd_wbyte(0x06, 0); // Cursor move direction
 	lcd_wbyte(0x0C, 0); // 0x0F On, Blink Off
@@ -106,53 +106,9 @@ int lcdS2(int decimalplace, int limit) {
     return 0;
 }
 
-/**
- * int lcdS2(int decimalplace, int digit) {
-    int limit = digit;
-    int cursor = decimalplace;
-    int button;
-    while (1) {
-        // display limit on the LCD with cursor at the current decimal place
-        displayNumberWithCursor(limit, cursor);
-
-        // get button press
-        button = getButtonPress();
-
-        // check button press
-        if (button == UP) {
-            int temp = limit / (int)pow(10, cursor) % 10;
-            temp = (temp + 1) % 10;
-            limit += temp * (int)pow(10, cursor);
-        } else if (button == OK) {
-            return limit;
-        } else if (button == DOWN) {
-            int temp = limit / (int)pow(10, cursor) % 10;
-            temp = (temp - 1) % 10;
-            limit += temp * (int)pow(10, cursor);
-        } else if (button == LEFT) {
-            if (cursor > 0) {
-                cursor--;
-            }
-        } else if (button == RIGHT) {
-            if (cursor < 1) {
-                cursor++;
-            }
-        }
-    }
-    return -1;
-}
-*/
-
 int lcdS3(int count, int limit) {
     if (!display) lcd_init();
     ClrLcd();
-
-    // if (count < 0) {
-    //     return -1;
-    // }
-    // if (limit < 1) {
-    //     return -1;
-    // }
 
     sprintf(text0, "count = %d/%d", count, limit);
     sprintf(text1, "any key for rst");
