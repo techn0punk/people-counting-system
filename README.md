@@ -24,8 +24,6 @@ sudo make install
 
 ## Demo
 
-<iframe src="https://mediathek.htw-berlin.de/media/embed?key=32b1e746ed77554b97dea0341d423c2c&width=720&height=405&autoplay=false&controls=true&autolightsoff=false&loop=false&chapters=false&playlist=false&related=false&responsive=false&t=0&loadonclick=true&thumb=true" data-src="https://mediathek.htw-berlin.de/media/embed?key=32b1e746ed77554b97dea0341d423c2c&width=720&height=405&autoplay=false&controls=true&autolightsoff=false&loop=false&chapters=false&playlist=false&related=false&responsive=false&t=0&loadonclick=true" class="" width="720" height="405" title="People Counting System (Demo) - Projekt Computer Systems Engineering" frameborder="0" allowfullscreen="allowfullscreen" allowtransparency="true" scrolling="no" aria-label="media embed code" style=""></iframe>
-
 [Video in the HTW Mediathek](https://mediathek.htw-berlin.de/video/People-Counting-System-28Demo29-2D-Projekt-Computer-Systems-Engineering/32b1e746ed77554b97dea0341d423c2c)
 
 ## [Poster](doc/poster/pcsposter5.pdf)
